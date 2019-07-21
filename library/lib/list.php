@@ -64,7 +64,7 @@ function listDelete($table, $ids, $uri = false)
 	$hasDeletefield = db_fieldexists($table, 'deleted');
 	$hasPrevent = db_fieldexists($table, 'preventdelete');
 	$hasTree = db_fieldexists($table, 'parent_id');
-
+	
 	try {
 		foreach ($ids as $id) {
 			if ($hasDeletefield) {
@@ -290,7 +290,10 @@ function initlist()
 	$listconfig['thisfile'] = $thisfile;
 
 	$listconfig['origin'] = $action;
-	$listconfig['edit'] = $action . '_edit';
+	if (!$listconfig['hasPredefinedEdit']) {
+		$listconfig['edit'] = $action . '_edit';
+	}
+	$listconfig['hasPredefinedEdit'] = false;
 	$listconfig['add'] = $translate['cms_list_add'];
 	$listconfig['delete'] = $translate['cms_list_delete'];
 	$listconfig['copy'] = $translate['cms_list_copy'];
