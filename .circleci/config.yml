@@ -120,3 +120,11 @@ workflows:
         filters:
           branches:
             only: production
+    - deploy:
+        envVariablePrefix: BOXWISE_DEV_
+        serviceName: dev
+        requires:
+          - build
+        filters:
+          branches:
+            only: dev

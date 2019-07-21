@@ -5,3 +5,5 @@ dispatch:
   service: demo
 - url: "app.boxwise.co/*"
   service: production
+- url: "dev.boxwise.co/*"
+  service: dev
