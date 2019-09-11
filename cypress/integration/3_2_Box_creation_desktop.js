@@ -6,6 +6,7 @@ context("Box_creation_tests", () => {
     let Test_product;
     let Test_size;
     let Test_id;
+    let Test_id2;
     
     
     before(function() {
@@ -32,14 +33,14 @@ context("Box_creation_tests", () => {
           });
         };
     
-        function pickSize(){
-            cy.get("span[id='select2-chosen-2']").click();
-            cy.get("body").then($body => {
-            cy.get("ul[class='select2-results'] li").eq(1).click()});
-            cy.get("span[id='select2-chosen-2']").then((text) =>{
-                  Test_size = text.text().replace('Size','').trim();
-              });
-            };
+    function pickSize(){
+        cy.get("span[id='select2-chosen-2']").click();
+        cy.get("body").then($body => {
+        cy.get("ul[class='select2-results'] li").eq(1).click()});
+        cy.get("span[id='select2-chosen-2']").then((text) =>{
+                Test_size = text.text().replace('Size','').trim();
+            });
+        };
     
     function CheckEmpty(){
         cy.get("span[id='select2-chosen-1']").contains("Please select").should("be.visible")
@@ -52,7 +53,7 @@ context("Box_creation_tests", () => {
         cy.get("button").contains("Save and new").should("be.visible")
         cy.get("a").contains("Cancel").should("be.visible")
     }
-    /*
+    
     it('3_2_1 Prevent box creation without data (Admin)', () => {
         CheckEmpty();
         cy.get("button[class='btn btn-submit btn-success").contains("Save and close").click();
@@ -60,7 +61,7 @@ context("Box_creation_tests", () => {
         cy.get("div[id='qtip-2-content']").should("be.visible");
         cy.get("div[id='qtip-3-content']").should("be.visible");
     })
-    */
+    
     it('3_2_2 Create Box with data (Admin)', () => {
         selectRandomProduct();
         pickSize();
@@ -70,8 +71,17 @@ context("Box_creation_tests", () => {
         cy.get("div[class='select2-result-label']").click();
         cy.get("button[class='btn btn-submit btn-success").contains("Save and close").click();
         cy.url().should('contain',"action=stock_confirm")
-        
-    })
+        cy.location('href').then((message) => {
+            Test_id2 = message;
+        })
+        let searchstring = "tr[id='row-"+Test_id2+"']";
+        cy.log(Test_id2)
+        cy.log(searchstring)
+        cy.get("a[class=menu_stock]").last().click();
+        cy.log(searchstring)
+        })
+
+        //Confirmation message should be checked, as well as existence of created box
     it('3_2_3 Create Box with data(Save and new)', () => {
         cy.get("div[id='s2id_field_product_id']").click();
         cy.get("div[class='select2-result-label']").contains(Test_product).click();
@@ -85,6 +95,8 @@ context("Box_creation_tests", () => {
         cy.get("h2").then((message) => {
             Test_id = message.text().split('ID').pop().split('(write')[0].trim()});
         CheckEmpty();
+        cy.get("a[class='menu_stock']").last().click()
+        cy.get("input")
 
         
     })
@@ -96,6 +108,5 @@ context("Box_creation_tests", () => {
         cy.get("i[class='fa fa-print']").click();
         cy.url().should('contain','pdf');
         cy.url().should('contain','label');
-
     });
 });
