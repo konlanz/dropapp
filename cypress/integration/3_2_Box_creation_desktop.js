@@ -26,6 +26,7 @@ context("Box_creation_tests", () => {
     })
 
     function selectRandomProduct(){
+        //select random Product, modified this from Martins function
         cy.get("div[id='s2id_field_product_id']").click();
         cy.get("body").then($body => {
         cy.get("ul[class='select2-results'] li").first().click();})
@@ -37,6 +38,7 @@ context("Box_creation_tests", () => {
         });
         };
     function pickSize(){
+        //just pick the first size
         cy.get("span[id='select2-chosen-2']").click();
         cy.get("body").then($body => {
         cy.get("ul[class='select2-results'] li").eq(1).click()});
@@ -96,7 +98,9 @@ context("Box_creation_tests", () => {
         cy.get("h2").should('contain',"This box contains "+Test_number+" "+Test_product+" and is located in "+Test_location).should("be.visible");
         cy.get("h2").then((message) => {
             Test_id1 = message.text().split('ID').pop().split('(write')[0].trim()});
-        })
+        cy.get("a").contains("Continue").click();
+        cy.url().should('contain','action=stock');
+    })
     it('3_2_2 Check created box', ()=> {
         //separation because variable saved via alias is not defined within same it()
         CheckBoxCreated(Test_id1,productname,Test_size,Test_location,Test_number);
