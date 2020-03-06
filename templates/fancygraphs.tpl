@@ -174,6 +174,20 @@ var chart2 = AmCharts.makeChart("chartdiv2", {
 </script>
 
 <!-- HTML -->
+<div class="fancyGraphsTitle">
+<h1 class="fancyGraphsTitleText">  Show me beneficiaries that  </h1>
+<select id="peopleType" class="fancyGraphsTitleDropdown">
+  <option value="checkedOut">checked out</option>
+  <option value="registered">registered</option>
+</select>
+<h1 class="fancyGraphsTitleText">  during   </h1>
+<select id="timePeriod" class="fancyGraphsTitleDropdown">
+  <option value="thisWeek">this week</option>
+  <option value="lastWeek">last week</option>
+  <option value="thisMonth">this month</option>
+  <option value="lastmonth">last month</option>
+</select>
+</div>
 <div id="chartdiv" class="chartdiv"></div>	
 <div id="chartdiv2" class="chartdiv"></div>	
 <div class="fc"></div>
