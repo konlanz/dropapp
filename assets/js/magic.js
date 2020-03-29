@@ -615,6 +615,51 @@ $(window).resize(function() {
     }
 });
 
+$(".fancyGraphsTitleDropdown").on("change",  function(e) {
+    var peopleType = $("#peopleType").val();
+    var timePeriod = $("#timePeriod").val();    
+    $.ajax({
+        type: "post",
+        url: "?action=fancygraphs",
+        data: "peopleType=" & peopleType & "timePeriod=" & timePeriod,
+        dataType: "json",
+        success: function(result) {
+            debugger;
+            if (result.success) {
+                if (result.newvalue == 1) {
+                    el.addClass("active");
+                } else {
+                    el.removeClass("active");
+                }
+                el.prev(".list-toggle-value").text(result.newvalue);
+            }
+            if (result.message) {
+                var n = noty({
+                    text: result.message,
+                    type: result.success ? "success" : "error"
+                });
+            }
+            if (result.redirect) {
+                if (result.message) {
+                    setTimeout(function() {
+                        execReload(result.redirect);
+                    }, 1500);
+                } else {
+                    execReload(result.redirect);
+                }
+            }
+        },
+        error: function(result) {
+            debugger;
+            var n = noty({
+                text:
+                    "This file cannot be found or what's being returned is not json.",
+                type: "error"
+            });
+        }
+    });
+});
+
 function initiateList() {
     if ($(".table:not(.initialized)").length) {
         $(".table").addClass("initialized");
